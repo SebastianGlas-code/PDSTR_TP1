@@ -1,0 +1,143 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --board "/boards/LAUNCHXL_F29H85X" --context "CPU1" --product "MCU_SDK_F29H85x@1.02.01.00"
+ * @v2CliArgs --board "/boards/LAUNCHXL_F29H85X" --context "CPU1" --product "MCU_SDK_F29H85x@1.02.01.00"
+ * @versions {"tool":"1.25.0+4268"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const adc       = scripting.addModule("/driverlib/adc.js", {}, false);
+const adc1      = adc.addInstance();
+const analog    = scripting.addModule("/driverlib/analog.js", {}, false);
+const analog1   = analog.addInstance();
+const led       = scripting.addModule("/driverlib/board_components/led", {}, false);
+const led1      = led.addInstance();
+const led2      = led.addInstance();
+const cputimer  = scripting.addModule("/driverlib/cputimer.js", {}, false);
+const cputimer1 = cputimer.addInstance();
+const epwm      = scripting.addModule("/driverlib/epwm.js", {}, false);
+const epwm1     = epwm.addInstance();
+const epwm2     = epwm.addInstance();
+const jtag      = scripting.addModule("/driverlib/jtag.js");
+const uart      = scripting.addModule("/driverlib/uart.js", {}, false);
+const uart1     = uart.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+adc1.$name                          = "ADC_SAMPLE";
+adc1.enabledSOCs                    = ["ADC_SOC_NUMBER0","ADC_SOC_NUMBER1"];
+adc1.registerInterrupts             = ["1"];
+adc1.enableInterrupt1               = true;
+adc1.interrupt1SOCSource            = "ADC_INT_TRIGGER_EOC1";
+adc1.enableInterrupt1ContinuousMode = true;
+adc1.enableTDMA                     = false;
+adc1.soc0Trigger                    = "ADC_TRIGGER_EPWM1_SOCA";
+adc1.soc1Channel                    = "ADC_CH_ADCIN1";
+adc1.soc1Trigger                    = "ADC_TRIGGER_EPWM1_SOCA";
+adc1.enabledInts                    = ["ADC_INT_NUMBER1"];
+adc1.socHighPriorityMode            = "ADC_PRI_THRU_SOC1_HIPRI";
+adc1.periphClock.$name              = "driverlib_perClock0";
+adc1.periphConfig.$name             = "driverlib_perConfig0";
+adc1.periphConfig.standbyEn         = false;
+adc1.periphConfig.dbgHaltEn         = false;
+
+analog1.$name                                = "myANALOGPinMux0";
+adc1.analog                                  = analog1;
+analog1.useCase                              = "CUSTOM";
+analog1.useInterfacePins                     = ["A0/C24/DACA_OUT","A1/C25"];
+analog1.analog.$assign                       = "ANALOG";
+analog1.analog["a0/c24/daca_outPin"].$assign = "boosterpack1.30";
+analog1.analog["a1/c25Pin"].$assign          = "boosterpack1.2";
+
+led1.$hardware = system.deviceData.board.components.LED4;
+led1.$name     = "myBoardLED1";
+
+led2.$name     = "myBoardLED2";
+led2.$hardware = system.deviceData.board.components.LED5;
+
+const divider4       = system.clockTree["EPWMCLKDIV"];
+divider4.divideValue = 1;
+
+const divider15       = system.clockTree["PLL_REFDIV"];
+divider15.divideValue = 1;
+
+const multiplier1         = system.clockTree["PLL_IMULT"];
+multiplier1.multiplyValue = 40;
+
+const mux7       = system.clockTree["OSCCLKSRCSEL"];
+mux7.inputSelect = "INTOSC2";
+
+cputimer1.$name              = "Timer_1ms";
+cputimer1.emulationMode      = "CPUTIMER_EMULATIONMODE_RUNFREE";
+cputimer1.timerPeriod        = 200000;
+cputimer1.startTimer         = true;
+cputimer1.enableInterrupt    = true;
+cputimer1.registerInterrupts = true;
+cputimer1.periphClock.$name  = "driverlib_perClock3";
+
+epwm1.epwmTimebase_hsClockDiv                           = "EPWM_HSCLOCK_DIVIDER_1";
+epwm1.$name                                             = "ePWM_ADC";
+epwm1.epwmTimebase_period                               = 19999;
+epwm1.useCase                                           = "CUSTOM";
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerEnable         = true;
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerEventPrescalar = "1";
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerSource         = "EPWM_SOC_TBCTR_ZERO";
+epwm1.periphClock.$name                                 = "driverlib_perClock1";
+epwm1.periphConfig.$name                                = "driverlib_perConfig1";
+epwm1.epwm.$assign                                      = "EPWM1";
+
+epwm2.epwmTimebase_hsClockDiv                                  = "EPWM_HSCLOCK_DIVIDER_1";
+epwm2.$name                                                    = "ePWM_OUT";
+epwm2.epwmTimebase_syncInPulseSource                           = "EPWM_SYNC_IN_PULSE_SRC_DISABLE";
+epwm2.$hardware                                                = system.deviceData.board.components.BP_SITE_1.subComponents.PWM_LOC2;
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPA = "EPWM_AQ_OUTPUT_LOW";
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_ZERO    = "EPWM_AQ_OUTPUT_HIGH";
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_ZERO    = "EPWM_AQ_OUTPUT_HIGH";
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_UP_CMPB = "EPWM_AQ_OUTPUT_LOW";
+epwm2.epwmTimebase_period                                      = 255;
+epwm2.epwmCounterCompare_cmpA                                  = 100;
+epwm2.epwmCounterCompare_cmpB                                  = 50;
+epwm2.epwmEventTrigger_enableInterrupt                         = true;
+epwm2.epwmEventTrigger_interruptSource                         = "EPWM_INT_TBCTR_ZERO";
+epwm2.epwmEventTrigger_interruptEventCount                     = "10";
+epwm2.epwmTimebase_emulationMode                               = "EPWM_EMULATION_FREE_RUN";
+epwm2.epwmEventTrigger_registerInterrupts                      = true;
+epwm2.periphClock.$name                                        = "driverlib_perClock2";
+epwm2.periphConfig.$name                                       = "driverlib_perConfig2";
+epwm2.epwm.$assign                                             = "EPWM2";
+epwm2.epwm.epwm_aPin.$assign                                   = "boosterpack1.38";
+epwm2.epwm.epwm_bPin.$assign                                   = "boosterpack1.37";
+
+jtag.JTAG.$assign        = "JTAG";
+jtag.JTAG.tdoPin.$assign = "GPIO223/TDO";
+jtag.JTAG.tdiPin.$assign = "GPIO222/TDI";
+scripting.suppress("Not pinned out,@@@.+?@@@ is not pinned out on the LaunchPad F29H85X\\.  @@@.+?@@@", jtag.JTAG, "tdoPin");
+scripting.suppress("Not pinned out,@@@.+?@@@ is not pinned out on the LaunchPad F29H85X\\.  @@@.+?@@@", jtag.JTAG, "tdiPin");
+
+uart1.$name                   = "UI_UART";
+uart1.$hardware               = system.deviceData.board.components.XDS_UART.subComponents.XDS_SCI_INST1;
+uart1.baudSelect              = "Custom";
+uart1.baud                    = 15000000;
+uart1.fen                     = true;
+uart1.registerInterrupts      = true;
+uart1.enabledInterrupts       = ["UART_INT_RX"];
+uart1.rxiflsel                = "UART_FIFO_RX7_8";
+uart1.txQual.$name            = "myGPIOQUAL0";
+uart1.rxQual.$name            = "myGPIOQUAL1";
+uart1.periphClock.$name       = "driverlib_perClock4";
+uart1.periphConfig.$name      = "driverlib_perConfig3";
+uart1.uart.$assign            = "UARTA";
+uart1.uart.uart_txPin.$assign = "boosterpack1.4";
+uart1.uart.uart_rxPin.$assign = "boosterpack1.3";
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+led1.gpio.gpioPin.$suggestSolution = "boosterpack1.13";
+led2.gpio.gpioPin.$suggestSolution = "GPIO62";

@@ -1,0 +1,16 @@
+# Archivos temporales y de compilación
+Debug/
+Release/
+*.out
+*.obj
+*.map
+*.pjt
+*.ccxml
+*.log
+*.tmp
+
+# Archivos de Code Composer Studio
+.metadata/
+.project
+.settings/
+.cproject

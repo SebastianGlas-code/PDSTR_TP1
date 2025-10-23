@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?ccsproject version="1.0"?>
+<projectOptions>
+	<ccsVariant value="50:Theia-based"/>
+	<ccsVersion value="70.3.0"/>
+	<deviceFamily value="C2000"/>
+	<connection value="common/targetdb/connections/TIXDS110_Connection.xml"/>
+	<executableActions value=""/>
+	<createSlaveProjects value=""/>
+	<activeTargetConfiguration value="targetConfigs/F29H850TU9.ccxml"/>
+	<templateProperties value="id=empty_driverlib_project.projectspec.TP1_PDSTR"/>
+	<isTargetConfigurationManual value="false"/>
+	<origin value="C:\ti\f29h85x-sdk_1_02_01_00\examples\driverlib\single_core\empty_projects\empty_driverlib_project\ccs\empty_driverlib_project.projectspec"/>
+	<filesToOpen value=""/>
+</projectOptions>
